@@ -16,7 +16,7 @@ Proyecto academico (CEOGET): registro de pacientes de la Clinica Betania, con va
 1. Clonar el repositorio:
 
    ```
-   git clone https://github.com/sintiquicarolsd-sys/Clinica-Betania.git
+      git clone https://github.com/Sintiqui/Clinica-Betania.git
    cd Clinica-Betania
    ```
 
