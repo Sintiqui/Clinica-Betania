@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Pacientes - Clínica Veterinaria Betania</title>
+    <!--
+        ARCHIVO:  index.html  (PÁGINA 2 de 2)
+        PAPEL:    Inicio de sesión (Correo + Contraseña → Iniciar).
+                  Si los datos son correctos muestra, en esta misma página,
+                  el saludo "¡Bienvenido, Carlos!" con los servicios de Betania.
+                  También tiene "¿Olvidaste tu contraseña?": envía un código
+                  de 6 dígitos al correo para crear una contraseña nueva.
+        USA:      estilos.css → diseño
+                  codigo.js   → verificación, bloqueo por intentos, sesión y recuperación
+                  server.js   → /api/login, /api/recuperar, /api/restablecer
+                  imag/       → beta1.png y beta2.png (logos de Betania)
+        VIENE DE: registro.html
+    -->
+    <link rel="icon" href="imag/beta2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <!-- ===== VISTA 1: INICIO DE SESIÓN ===== -->
+    <section class="contenedor" id="vistaLogin" hidden>
+        <aside class="panelMarca">
+            <div class="logo">
+                <img src="imag/beta2.png" alt="Logo Clínica Veterinaria Betania">
+                <div><b>Clínica Veterinaria Betania</b><span>Portal de pacientes</span></div>
+            </div>
+            <h2>Qué bueno verte <em>de nuevo</em>.</h2>
+            <p>Ingresa con tu correo y contraseña para ver los servicios de Betania para tu mascota.</p>
+        </aside>
+
+        <main class="panelFormulario">
+            <img class="logoFormulario" src="imag/beta1.png" alt="Clínica Veterinaria Betania">
+            <h1>Inicio de sesión</h1>
+            <p class="subtitulo">Usa el correo con el que te registraste.</p>
+
+            <!-- Mensajes: cuenta creada, datos incorrectos, bloqueo, sesión cerrada, contraseña cambiada -->
+            <div id="alertaLogin" class="alerta" role="alert"></div>
+
+            <form id="formLogin" novalidate>
+                <div class="campo">
+                    <label for="correo">Correo</label>
+                    <input type="email" id="correo" autocomplete="username" placeholder="tucorreo@dominio.com">
+                    <div class="error" id="error-correo"></div>
+                </div>
+                <div class="campo">
+                    <label for="contrasena">Contraseña</label>
+                    <div class="grupo">
+                        <input type="password" id="contrasena" autocomplete="current-password">
+                        <button type="button" class="btnVer" data-objetivo="contrasena">Ver</button>
+                    </div>
+                    <div class="error" id="error-contrasena"></div>
+                </div>
+                <button type="submit" class="boton" id="botonIngresar">Iniciar</button>
+            </form>
+
+            <!-- Guía: recuperar contraseña -->
+            <p class="pie"><button type="button" class="enlaceBoton" id="enlaceRecuperar">¿Olvidaste tu contraseña?</button></p>
+            <p class="pie">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
+        </main>
+    </section>
+
+    <!-- ===== VISTA 2: BIENVENIDA CON LOS SERVICIOS DE BETANIA ===== -->
+    <section class="bienvenida" id="vistaBienvenida" hidden>
+        <div class="cabeceraBienvenida">
+            <div class="logo">
+                <img src="imag/beta2.png" alt="Logo Clínica Veterinaria Betania">
+                <div><b>Clínica Veterinaria Betania</b><span>Portal de pacientes</span></div>
+            </div>
+            <p class="saludoHora" id="saludoHora"></p>
+            <h1 id="tituloBienvenida"></h1>
+            <p>Gracias por confiar en Betania. Estos son los servicios que tenemos para tu mascota.</p>
+            <p><span class="etiqueta">Paciente · Dueño de mascota</span></p>
+        </div>
+        <div class="cuerpoBienvenida">
+            <!-- Servicios: se dibujan desde la lista SERVICIOS de codigo.js -->
+            <h2 class="tituloSeccion">🐾 Nuestros servicios</h2>
+            <div class="servicios" id="listaServicios"></div>
+
+            <h2 class="tituloSeccion">Tus datos</h2>
+            <div class="datos">
+                <div class="dato"><span>Usuario</span><b id="datoUsuario"></b></div>
+                <div class="dato"><span>Correo</span><b id="datoCorreo"></b></div>
+                <div class="dato"><span>Celular</span><b id="datoTelefono"></b></div>
+                <div class="dato"><span>Documento</span><b id="datoDocumento"></b></div>
+                <div class="dato"><span>Paciente desde</span><b id="datoDesde"></b></div>
+                <div class="dato"><span>Ingreso anterior</span><b id="datoAnterior"></b></div>
+            </div>
+
+            <button type="button" class="boton" id="botonCerrarSesion">Cerrar sesión</button>
+            <p class="notaSesion" id="notaSesion"></p>
+        </div>
+    </section>
+
+    <!-- ===== VISTA 3: RECUPERAR CONTRASEÑA (código de 6 dígitos al correo) ===== -->
+    <section class="contenedor" id="vistaRecuperar" hidden>
+        <aside class="panelMarca">
+            <div class="logo">
+                <img src="imag/beta2.png" alt="Logo Clínica Veterinaria Betania">
+                <div><b>Clínica Veterinaria Betania</b><span>Portal de pacientes</span></div>
+            </div>
+            <h2>Recupera tu <em>acceso</em>.</h2>
+            <p>Te enviaremos un código de 6 dígitos a tu correo. El código vence y solo sirve una vez.</p>
+        </aside>
+
+        <main class="panelFormulario">
+            <img class="logoFormulario" src="imag/beta1.png" alt="Clínica Veterinaria Betania">
+            <h1>Recuperar contraseña</h1>
+            <p class="subtitulo">Escribe el correo con el que te registraste.</p>
+
+            <!-- Mensajes: código enviado, error inesperado -->
+            <div id="alertaRecuperar" class="alerta" role="alert"></div>
+
+            <!-- Paso 1: pedir el código -->
+            <form id="formPedirCodigo" novalidate>
+                <div class="campo">
+                    <label for="recCorreo">Correo</label>
+                    <input type="email" id="recCorreo" autocomplete="username" placeholder="tucorreo@dominio.com">
+                    <div class="error" id="error-recCorreo"></div>
+                </div>
+                <button type="submit" class="boton" id="botonPedirCodigo">Enviar código</button>
+            </form>
+
+            <!-- Paso 2: código + nueva contraseña -->
+            <form id="formRestablecer" novalidate hidden>
+                <div class="campo">
+                    <label for="recCodigo">Código de 6 dígitos</label>
+                    <input type="text" id="recCodigo" inputmode="numeric" autocomplete="one-time-code" placeholder="000000">
+                    <div class="error" id="error-recCodigo"></div>
+                </div>
+                <div class="campo">
+                    <label for="recContrasena">Nueva contraseña</label>
+                    <div class="grupo">
+                        <input type="password" id="recContrasena" autocomplete="new-password">
+                        <button type="button" class="btnVer" data-objetivo="recContrasena">Ver</button>
+                    </div>
+                    <div class="medidor" id="recMedidor"><span></span><span></span><span></span><span></span></div>
+                    <div class="textoMedidor" id="recTextoMedidor"></div>
+                    <div class="error" id="error-recContrasena"></div>
+                </div>
+                <div class="campo">
+                    <label for="recConfirmar">Confirmar nueva contraseña</label>
+                    <div class="grupo">
+                        <input type="password" id="recConfirmar" autocomplete="new-password">
+                        <button type="button" class="btnVer" data-objetivo="recConfirmar">Ver</button>
+                    </div>
+                    <div class="error" id="error-recConfirmar"></div>
+                </div>
+                <button type="submit" class="boton" id="botonCambiarClave">Cambiar contraseña</button>
+                <p class="pie"><button type="button" class="enlaceBoton" id="botonOtroCodigo">¿No te llegó? Pedir otro código</button></p>
+            </form>
+
+            <p class="pie"><button type="button" class="enlaceBoton" id="botonVolverLogin">← Volver a iniciar sesión</button></p>
+        </main>
+    </section>
+
+    <!-- ===== AVISO ANTES DE CERRAR LA SESIÓN POR INACTIVIDAD ===== -->
+    <div class="fondoModal" id="modalAviso">
+        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="tituloAviso">
+            <h2 id="tituloAviso">¿Deseas continuar?</h2>
+            <p>Por tu seguridad, tu sesión se cerrará por inactividad en:</p>
+            <div class="contador" id="contadorAviso">30</div>
+            <div class="botonesModal">
+                <button type="button" class="boton botonSecundario" id="botonSalirAviso">Cerrar sesión</button>
+                <button type="button" class="boton" id="botonContinuar">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CRÉDITOS: CAMBIA AQUÍ TU NOMBRE ===== -->
+    <footer class="creditos">Trabajo realizado por: <b>Tu Nombre Aquí</b> · Proyecto académico</footer>
+
+    <script src="codigo.js"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pacientes - Clínica Veterinaria Betania</title>
+    <!--
+        ARCHIVO:  registro.html  (PÁGINA 1 de 2)
+        PAPEL:    Registro de pacientes (dueños de mascotas).
+        USA:      estilos.css → diseño
+                  codigo.js   → validación en el navegador y envío al servidor
+                  server.js   → POST /api/registro (valida otra vez, cifra la contraseña
+                                y guarda en pacientes.json)
+                  imag/       → beta1.png y beta2.png (logos de Betania)
+        SIGUE A:  index.html (al registrarse pasa a iniciar sesión)
+    -->
+    <link rel="icon" href="imag/beta2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+
+        <!-- ===== PANEL DE MARCA (izquierda) ===== -->
+        <aside class="panelMarca">
+            <div class="logo">
+                <img src="imag/beta2.png" alt="Logo Clínica Veterinaria Betania">
+                <div><b>Clínica Veterinaria Betania</b><span>Portal de pacientes</span></div>
+            </div>
+            <h2>El cuidado de tu mascota,<br><em>a un clic</em>.</h2>
+            <p>Regístrate como paciente (dueño de mascota) para agendar citas, consultar el carnet de vacunación y revisar recetas.</p>
+            <ul class="beneficios">
+                <li>Registro rápido y seguro</li>
+                <li>Contraseña cifrada, nunca visible</li>
+                <li>Datos protegidos (Ley 1581 de 2012)</li>
+            </ul>
+        </aside>
+
+        <!-- ===== FORMULARIO DE REGISTRO (derecha) ===== -->
+        <main class="panelFormulario">
+            <img class="logoFormulario" src="imag/beta1.png" alt="Clínica Veterinaria Betania">
+            <h1>Registro</h1>
+            <p class="subtitulo">Registro de pacientes (dueños de mascotas). Todos los campos son obligatorios.</p>
+
+            <!-- Mensajes generales: éxito, dato repetido o error inesperado -->
+            <div id="alertaGeneral" class="alerta" role="alert"></div>
+
+            <!-- novalidate: los mensajes los da codigo.js, no el navegador -->
+            <form id="formRegistro" novalidate autocomplete="off">
+                <div class="rejilla">
+                    <!-- Nombre -->
+                    <div class="campo completo">
+                        <label for="nombre">Nombre completo</label>
+                        <input type="text" id="nombre" placeholder="Ej: Sofía Martínez">
+                        <div class="error" id="error-nombre"></div>
+                    </div>
+
+                    <!-- Usuario -->
+                    <div class="campo">
+                        <label for="usuario">Usuario</label>
+                        <input type="text" id="usuario" placeholder="Ej: sofia_pet">
+                        <div class="error" id="error-usuario"></div>
+                    </div>
+
+                    <!-- Correo (Mail) -->
+                    <div class="campo">
+                        <label for="correo">Correo electrónico</label>
+                        <input type="email" id="correo" placeholder="tucorreo@dominio.com">
+                        <div class="error" id="error-correo"></div>
+                    </div>
+
+                    <!-- Celular -->
+                    <div class="campo">
+                        <label for="telefono">Celular</label>
+                        <div class="grupo">
+                            <span class="prefijo">+57</span>
+                            <input type="tel" id="telefono" inputmode="numeric" placeholder="3001234567">
+                        </div>
+                        <div class="error" id="error-telefono"></div>
+                    </div>
+
+                    <!-- Fecha de nacimiento -->
+                    <div class="campo">
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <input type="date" id="fechaNacimiento">
+                        <div class="error" id="error-fechaNacimiento"></div>
+                    </div>
+
+                    <!-- Tipo de documento -->
+                    <div class="campo">
+                        <label for="tipoDocumento">Tipo de documento</label>
+                        <select id="tipoDocumento">
+                            <option value="">Selecciona...</option>
+                            <option value="CC">Cédula de Ciudadanía (CC)</option>
+                            <option value="TI">Tarjeta de Identidad (TI)</option>
+                            <option value="CE">Cédula de Extranjería (CE)</option>
+                            <option value="PPT">Permiso por Protección Temporal (PPT)</option>
+                        </select>
+                        <div class="error" id="error-tipoDocumento"></div>
+                    </div>
+
+                    <!-- Número de documento -->
+                    <div class="campo">
+                        <label for="documento">Número de documento</label>
+                        <input type="text" id="documento" inputmode="numeric" placeholder="Solo números">
+                        <div class="error" id="error-documento"></div>
+                    </div>
+
+                    <!-- Contraseña, con medidor de fortaleza -->
+                    <div class="campo completo">
+                        <label for="contrasena">Contraseña</label>
+                        <div class="grupo">
+                            <input type="password" id="contrasena" autocomplete="new-password">
+                            <button type="button" class="btnVer" data-objetivo="contrasena">Ver</button>
+                        </div>
+                        <div class="medidor" id="medidor"><span></span><span></span><span></span><span></span></div>
+                        <div class="textoMedidor" id="textoMedidor"></div>
+                        <div class="error" id="error-contrasena"></div>
+                    </div>
+
+                    <!-- Confirmar contraseña -->
+                    <div class="campo completo">
+                        <label for="confirmarContrasena">Confirmar contraseña</label>
+                        <div class="grupo">
+                            <input type="password" id="confirmarContrasena" autocomplete="new-password">
+                            <button type="button" class="btnVer" data-objetivo="confirmarContrasena">Ver</button>
+                        </div>
+                        <div class="error" id="error-confirmarContrasena"></div>
+                    </div>
+
+                    <!-- Términos -->
+                    <!-- Se desbloquea cuando la contraseña es Fuerte y coincide con la confirmación -->
+                    <div class="campo completo">
+                        <div class="casilla" id="cajaTerminos">
+                            <input type="checkbox" id="terminos" disabled>
+                            <label for="terminos">Acepto los términos y la política de tratamiento de datos conforme a la <b>Ley 1581 de 2012</b>.</label>
+                        </div>
+                        <div class="ayudaTerminos" id="ayudaTerminos"></div>
+                        <div class="error" id="error-terminos"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="boton" id="botonRegistrar">Confirmar registro</button>
+            </form>
+
+            <p class="pie">¿Ya tienes cuenta? <a href="index.html">Iniciar sesión</a></p>
+        </main>
+    </div>
+
+    <!-- ===== CRÉDITOS: CAMBIA AQUÍ TU NOMBRE ===== -->
+    <footer class="creditos">Trabajo realizado por: <b>Tu Nombre Aquí</b> · Proyecto académico</footer>
+
+    <!-- La lógica va al final para que el HTML ya exista cuando el código lo busque -->
+    <script src="codigo.js"></script>
+</body>
+</html>

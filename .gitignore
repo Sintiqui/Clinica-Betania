@@ -1,0 +1,18 @@
+# ARCHIVO: .gitignore
+# PAPEL: indica a Git que archivos NO se suben a GitHub
+
+# Dependencias (se regeneran con npm install)
+node_modules/
+
+# Claves y configuracion privada
+.env
+
+# Datos reales de pacientes (informacion personal)
+pacientes.json
+
+# Registros de errores de npm
+npm-debug.log*
+
+# Archivos del sistema
+Thumbs.db
+.DS_Store

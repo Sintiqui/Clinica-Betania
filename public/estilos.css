@@ -1,0 +1,226 @@
+/* =========================================================
+   ARCHIVO: estilos.css
+   PAPEL:   Todos los estilos del proyecto. Lo usan registro.html e index.html.
+   ORDEN:   1. Colores  2. Base  3. Panel de marca  4. Formularios
+            5. Contrasena  6. Botones y alertas  7. Bienvenida
+            8. Ventana de aviso  9. Creditos  10. Celular
+   ========================================================= */
+
+/* ---------- 1. COLORES (si cambia la paleta, se cambia solo aqui) ---------- */
+:root {
+    --marino: #2A3F22;          /* verde muy oscuro: títulos */
+    --primario: #557A46;        /* verde Betania: confianza y naturaleza */
+    --primarioOscuro: #3E5C32;
+    --primarioSuave: #EBF2EE;
+    --acento: #B9D99B;          /* verde claro para resaltar */
+    --calido: #E07A5F;          /* terracota: etiquetas */
+    --fondo: #F4F6F4;
+    --tarjeta: #FFFFFF;
+    --borde: #D6DED3;
+    --texto: #333333;
+    --gris: #66705F;
+    --error: #D93A3A;
+    --errorSuave: #FDECEC;
+    --naranja: #F08C2E;
+    --amarillo: #E9B213;
+    --verde: #16A34A;
+    --verdeSuave: #E8F7EE;
+    --infoSuave: #EAF2FB;
+    --sombra: 0 20px 50px rgba(11, 37, 69, 0.12);
+}
+
+/* ---------- 2. BASE ---------- */
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', 'Segoe UI', Arial, sans-serif;
+    color: var(--texto);
+    background: var(--fondo);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+}
+a { color: var(--primario); font-weight: 700; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Tarjeta de dos columnas: marca a la izquierda, formulario a la derecha */
+.contenedor {
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    background: var(--tarjeta);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+}
+
+/* ---------- 3. PANEL DE MARCA ---------- */
+.panelMarca {
+    background: radial-gradient(circle at 20% 15%, rgba(185,217,155,0.35), transparent 45%),
+                linear-gradient(160deg, var(--marino) 0%, var(--primarioOscuro) 55%, var(--primario) 100%);
+    color: #fff;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.logo { display: flex; align-items: center; gap: 12px; }
+/* Logo de Betania (imag/beta2.png): cuadro blanco redondeado para que se vea bien sobre el verde */
+.logo img { width: 64px; height: 64px; border-radius: 14px; object-fit: contain; padding: 4px;
+            background: #fff; border: 2px solid var(--acento); flex-shrink: 0; }
+.logo b { display: block; font-size: 1.2rem; }
+.logo span { font-size: 0.8rem; color: var(--acento); letter-spacing: 1.5px; text-transform: uppercase; }
+.panelMarca h2 { font-size: 2rem; line-height: 1.2; margin: 20px 0 0 0; font-weight: 800; }
+.panelMarca h2 em { font-style: normal; color: var(--acento); }
+.panelMarca p { color: #C9D6E3; line-height: 1.6; margin: 0; }
+.beneficios { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.beneficios li { display: flex; gap: 10px; align-items: center; font-size: 0.95rem; }
+.beneficios li::before {
+    content: "✓"; display: grid; place-items: center; width: 24px; height: 24px; flex-shrink: 0;
+    border-radius: 50%; background: rgba(185,217,155,0.2); color: var(--acento); font-weight: 800; font-size: 0.8rem;
+}
+.etiqueta { display: inline-block; background: var(--calido); color: #fff; padding: 4px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ---------- 4. FORMULARIOS ---------- */
+.panelFormulario { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+.panelFormulario h1 { margin: 0; font-size: 1.6rem; color: var(--marino); }
+/* Logo horizontal (imag/beta1.png) arriba del título del formulario */
+.logoFormulario { display: block; height: 56px; width: auto; max-width: 100%; margin-bottom: 14px; }
+.subtitulo { margin: 4px 0 0 0; color: var(--gris); font-size: 0.9rem; }
+.rejilla { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.completo { grid-column: 1 / -1; }
+.campo { margin-top: 14px; }
+label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 5px; color: var(--marino); }
+input[type=text], input[type=email], input[type=password], input[type=date], input[type=tel], select {
+    width: 100%;
+    padding: 11px 12px;
+    background: #fff;
+    color: var(--texto);
+    border: 1.5px solid var(--borde);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+input:focus, select:focus { outline: none; border-color: var(--primario); box-shadow: 0 0 0 4px rgba(85,122,70,0.18); }
+input.invalido, select.invalido { border-color: var(--error); background: var(--errorSuave); }
+input.valido, select.valido { border-color: var(--verde); }
+
+/* Prefijo +57 pegado al celular */
+.prefijo {
+    padding: 11px 12px; background: var(--primarioSuave); color: var(--primarioOscuro); font-weight: 700;
+    border: 1.5px solid var(--borde); border-right: none; border-radius: 10px 0 0 10px;
+}
+.grupo .prefijo + input { border-radius: 0 10px 10px 0; }
+
+/* Casilla de términos */
+.casilla { display: flex; gap: 10px; align-items: flex-start; font-size: 0.88rem; }
+.casilla input { margin-top: 2px; accent-color: var(--primario); width: 18px; height: 18px; flex-shrink: 0; }
+.casilla label { font-weight: 500; color: var(--texto); margin: 0; }
+
+/* Términos bloqueados hasta que la contraseña sea Fuerte y coincida */
+.casilla.bloqueada { opacity: 0.5; }
+.casilla.bloqueada input, .casilla.bloqueada label { cursor: not-allowed; }
+.ayudaTerminos { font-size: 0.78rem; color: var(--gris); margin-top: 4px; }
+
+/* Botón con aspecto de enlace (ej: borrar registros de prueba) */
+.enlaceBoton { background: none; border: none; padding: 0; font: inherit; color: var(--primario); font-weight: 700; cursor: pointer; }
+.enlaceBoton:hover { text-decoration: underline; }
+.enlacePeligro { color: var(--gris); font-size: 0.8rem; font-weight: 600; }
+.enlacePeligro:hover { color: var(--error); }
+.error { color: var(--error); font-size: 0.78rem; min-height: 1.1em; margin-top: 4px; }
+
+/* Casilla de contrasena con boton "Ver" pegado */
+.grupo { display: flex; }
+.grupo input { border-radius: 10px 0 0 10px; }
+.btnVer {
+    border: 1.5px solid var(--borde); border-left: none; border-radius: 0 10px 10px 0;
+    background: var(--primarioSuave); color: var(--primarioOscuro); padding: 0 14px; cursor: pointer;
+    font-family: inherit; font-weight: 600; font-size: 0.8rem;
+}
+
+/* ---------- 5. MEDIDOR DE CONTRASENA (4 segmentos = 4 requisitos) ---------- */
+.medidor { display: flex; gap: 5px; margin-top: 8px; }
+.medidor span { flex: 1; height: 6px; border-radius: 999px; background: #E5EBF0; transition: background-color 0.2s; }
+.textoMedidor { font-size: 0.8rem; margin-top: 5px; color: var(--gris); min-height: 1.1em; font-weight: 600; }
+
+/* ---------- 6. BOTONES Y ALERTAS ---------- */
+.boton {
+    width: 100%; margin-top: 20px; padding: 14px; border: none; border-radius: 999px;
+    background: linear-gradient(135deg, var(--primario), var(--primarioOscuro));
+    color: #fff; font-weight: 700; font-size: 1rem; font-family: inherit; cursor: pointer;
+    box-shadow: 0 10px 24px rgba(85,122,70,0.3); transition: transform 0.1s;
+}
+.boton:hover { transform: translateY(-2px); }
+.boton:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.botonSecundario { background: #fff; color: var(--marino); border: 1.5px solid var(--borde); box-shadow: none; }
+
+.alerta { display: none; padding: 11px 14px; border-radius: 10px; margin-top: 16px; font-size: 0.9rem; font-weight: 500; }
+.alerta.error { display: block; background: var(--errorSuave); border: 1px solid #F5B5B5; color: #9B1C1C; }
+.alerta.exito { display: block; background: var(--verdeSuave); border: 1px solid #A7E0BC; color: #14532D; }
+.alerta.info  { display: block; background: var(--infoSuave); border: 1px solid #BFD5EE; color: #1E3A5F; }
+.pie { text-align: center; margin-top: 18px; font-size: 0.9rem; color: var(--gris); }
+
+/* ---------- 7. BIENVENIDA (vista dentro de index.html) ---------- */
+.bienvenida { width: 100%; max-width: 860px; background: var(--tarjeta); border-radius: 22px; overflow: hidden; box-shadow: var(--sombra); }
+.cabeceraBienvenida {
+    background: radial-gradient(circle at 85% 0%, rgba(185,217,155,0.4), transparent 50%),
+                linear-gradient(135deg, var(--marino), var(--primario));
+    color: #fff; padding: 30px 34px 36px 34px;
+}
+.saludoHora { margin: 22px 0 4px 0; color: var(--acento); font-weight: 600; }
+.cabeceraBienvenida h1 { margin: 0; font-size: 2.1rem; font-weight: 800; }
+.cabeceraBienvenida p { margin: 8px 0 0 0; color: #C9D6E3; }
+.cuerpoBienvenida { padding: 26px 34px 30px 34px; }
+.datos { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.dato { background: var(--fondo); border: 1px solid var(--borde); border-radius: 12px; padding: 12px 14px; }
+.dato span { display: block; font-size: 0.72rem; color: var(--gris); text-transform: uppercase; letter-spacing: 0.6px; font-weight: 600; }
+.dato b { display: block; margin-top: 4px; color: var(--marino); word-break: break-word; }
+.notaSesion { font-size: 0.8rem; color: var(--gris); margin-top: 16px; text-align: center; }
+.tituloSeccion { font-size: 1.1rem; color: var(--marino); margin: 4px 0 12px 0; }
+.tituloSeccion + .datos { margin-bottom: 4px; }
+.servicios + .tituloSeccion { margin-top: 24px; }
+
+/* Tarjetas de servicios de Betania */
+.servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.servicio {
+    background: var(--primarioSuave); border: 1px solid var(--borde); border-radius: 14px; padding: 14px 16px;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+.servicio:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(42,63,34,0.1); }
+.iconoServicio {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+    background: #fff; font-size: 1.3rem; margin-bottom: 8px;
+}
+.servicio b { display: block; color: var(--marino); }
+.servicio p { margin: 4px 0 0 0; font-size: 0.85rem; color: var(--gris); line-height: 1.45; }
+
+/* ---------- 8. VENTANA DE AVISO (inactividad) ---------- */
+.fondoModal { display: none; position: fixed; inset: 0; background: rgba(11,37,69,0.55); backdrop-filter: blur(3px); z-index: 30; align-items: center; justify-content: center; padding: 16px; }
+.fondoModal.visible { display: flex; }
+.modal { background: #fff; border-radius: 18px; padding: 26px; max-width: 400px; width: 100%; text-align: center; box-shadow: var(--sombra); }
+.modal h2 { color: var(--marino); margin: 0 0 6px 0; }
+.contador { font-size: 2.6rem; font-weight: 800; color: var(--primario); margin: 10px 0; }
+.botonesModal { display: flex; gap: 10px; }
+.botonesModal .boton { margin-top: 10px; }
+
+/* ---------- 9. CREDITOS (quien hizo el trabajo) ---------- */
+.creditos { margin-top: 18px; font-size: 0.85rem; color: var(--gris); text-align: center; }
+.creditos b { color: var(--marino); }
+
+/* ---------- 10. CELULAR ---------- */
+@media (max-width: 860px) {
+    .contenedor { grid-template-columns: 1fr; }
+    .panelMarca { padding: 26px 24px; gap: 12px; }
+    .panelMarca h2 { font-size: 1.5rem; margin-top: 4px; }
+    .beneficios { display: none; }
+    .panelFormulario { padding: 26px 20px; }
+    .cabeceraBienvenida, .cuerpoBienvenida { padding-left: 20px; padding-right: 20px; }
+    .cabeceraBienvenida h1 { font-size: 1.7rem; }
+}
+@media (max-width: 520px) { .rejilla { grid-template-columns: 1fr; } }
